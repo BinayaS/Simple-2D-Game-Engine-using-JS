@@ -4,6 +4,7 @@ class Object {
         this.sprite = sprite;
         this.xPos = x;
         this.yPos = y;
+        this.scripts = [];
         this.start();
     }
 
@@ -21,7 +22,13 @@ class Object {
         drawArray.push(this);
     }
 
-    update() {
+    run() {
+    }
 
+    update(progress) {
+        // this.scripts.forEach(element => {
+        //     element.run(progress);
+        // });
+        this.run();
     }
 }

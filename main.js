@@ -5,6 +5,7 @@
     var ctx = canvas.getContext("2d");
     var canvasHeight = 400;
     var canvasWidth = 800;
+    var canvasFillColor = "rgb(255, 255, 255)";
 
     var updateArray = [];
     var drawArray = [];
@@ -38,6 +39,10 @@
     var o = new Object(s, 400, 100);
     var o2 = new Object(s2, 200, 100);
 
+    o.run = function() {
+        this.xPos += 0.5
+    }
+
 }
 
 //---- Game Loop ----//
@@ -51,11 +56,12 @@
     }
 
     function draw(ctx) {
+        ctx.fillStyle = canvasFillColor;
+        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
         drawArray.forEach(element => {
             element.draw(ctx);
         });
-
     }
     
     function loop(timestamp) {
