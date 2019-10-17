@@ -1,7 +1,7 @@
 class Sprite {
     constructor(object = {  
-        x: 0,
-        y: 0,
+        xOrigin: 0,
+        yOrigin: 0,
         width: 0,
         height: 0,
         color: "rgb(0, 0, 0)",
@@ -14,8 +14,8 @@ class Sprite {
                 this.height = object.height;
                 this.color = object.color;
             }
-            this.xOrigin = object.x;
-            this.yOrigin = object.y;
+            this.xOrigin = object.xOrigin;
+            this.yOrigin = object.yOrigin;
         }
 
 }

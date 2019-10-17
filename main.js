@@ -20,8 +20,8 @@
     img.src = "/_assets/Player.png";
     
     var s = new Sprite({
-        x: 2.5,
-        y: 2.5,
+        xOrigin: 2.5,
+        yOrigin: 2.5,
         width: 5,
         height: 5,
         color: "rgb(0, 255, 0)"
@@ -31,8 +31,6 @@
         y: img.height/2,
         img: img
     });
-
-    new Sprite()
     
     var o = new Object(s, 200, 100);
     var o2 = new Object(s2, 200, 100);
