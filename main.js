@@ -5,6 +5,9 @@
     var ctx = canvas.getContext("2d");
     var canvasHeight = 400;
     var canvasWidth = 800;
+
+    var updateArray = [];
+    var drawArray = [];
 }
 
 //---- Setup Canvas ----//
@@ -16,8 +19,8 @@
 
 //---- Test Code ----//
 {
-    var img = new Image();
-    img.src = "/_assets/Player.png";
+    var image = new Image();
+    image.src = "/_assets/Player.png";
     
     var s = new Sprite({
         xOrigin: 2.5,
@@ -27,25 +30,32 @@
         color: "rgb(0, 255, 0)"
     });
     var s2 = new Sprite({
-        x: img.width/2,
-        y: img.height/2,
-        img: img
+        xOrigin: image.width/2,
+        yOrigin: image.height/2,
+        img: image
     });
     
-    var o = new Object(s, 200, 100);
+    var o = new Object(s, 400, 100);
     var o2 = new Object(s2, 200, 100);
+
 }
-
-
 
 //---- Game Loop ----//
 {
     function update(progress) {
+
+        updateArray.forEach(element => {
+            element.update(progress);
+        });
+
     }
-    
+
     function draw(ctx) {
-        o2.draw(ctx);
-        o.draw(ctx);
+
+        drawArray.forEach(element => {
+            element.draw(ctx);
+        });
+
     }
     
     function loop(timestamp) {

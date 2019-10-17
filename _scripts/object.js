@@ -4,6 +4,7 @@ class Object {
         this.sprite = sprite;
         this.xPos = x;
         this.yPos = y;
+        this.start();
     }
 
     draw(ctx) {
@@ -13,6 +14,14 @@ class Object {
             ctx.fillStyle = this.sprite.color;
             ctx.fillRect(this.xPos - this.sprite.xOrigin, this.yPos - this.sprite.yOrigin, this.sprite.width, this.sprite.height);
         }
-        
+    }
+
+    start() {
+        updateArray.push(this);
+        drawArray.push(this);
+    }
+
+    update() {
+
     }
 }
