@@ -1,17 +1,21 @@
 class Sprite {
-    
-    constructor(x, y, width, height, color, img) {
-        
-        if(img != undefined) {
-            this.img = img;
-        } else {
-            this.width = width;
-            this.height = height;
-            this.color = color;
+    constructor(object = {  
+        x: 0,
+        y: 0,
+        width: 0,
+        height: 0,
+        color: "rgb(0, 0, 0)",
+        img: new Image })
+        {
+            if(object.img != undefined) {
+                this.img = object.img;
+            } else {
+                this.width = object.width;
+                this.height = object.height;
+                this.color = object.color;
+            }
+            this.xOrigin = object.x;
+            this.yOrigin = object.y;
         }
-
-        this.xOrigin = x;
-        this.yOrigin = y;
-    }
 
 }
