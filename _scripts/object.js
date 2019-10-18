@@ -5,6 +5,7 @@ class Object {
         this.xPos = x;
         this.yPos = y;
         this.scripts = [];
+        this.ranStart = false;
         this.start();
     }
 
@@ -22,13 +23,20 @@ class Object {
         drawArray.push(this);
     }
 
-    run() {
+    runStart() {
     }
 
-    update(progress) {
-        // this.scripts.forEach(element => {
-        //     element.run(progress);
-        // });
-        this.run();
+    update(delta) {
+
+        if(this.ranStart === false) {
+            this.runStart();
+            this.ranStart = true;
+        }
+
+        if(this.ranStart === false) {
+            this.runStart();
+            this.ranStart = true;
+        }
+        this.run(delta);
     }
 }

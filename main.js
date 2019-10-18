@@ -1,83 +1,67 @@
 
-//---- Init. Vars ----//
-{
-    var canvas = document.getElementById("myCanvas");
-    var ctx = canvas.getContext("2d");
-    var canvasHeight = 400;
-    var canvasWidth = 800;
-    var canvasFillColor = "rgb(255, 255, 255)";
+var height = 400;
+var width = 800;
 
-    var updateArray = [];
-    var drawArray = [];
-}
+const canvasHeight = height;
+const canvasWidth = width;
 
-//---- Setup Canvas ----//
-{
-    canvas.width = canvasWidth;
-    canvas.height = canvasHeight;
-}
+const canvas = document.getElementById("myCanvas");
+const ctx = canvas.getContext("2d");
 
+var canvasFillColor = "rgb(255, 255, 255)";
 
-//---- Test Code ----//
-{
-    var image = new Image();
-    image.src = "/_assets/Player.png";
-    
-    var s = new Sprite({
-        xOrigin: 2.5,
-        yOrigin: 2.5,
-        width: 5,
-        height: 5,
-        color: "rgb(0, 255, 0)"
-    });
-    var s2 = new Sprite({
-        xOrigin: image.width/2,
-        yOrigin: image.height/2,
-        img: image
-    });
-    
-    var o = new Object(s, 400, 100);
-    var o2 = new Object(s2, 200, 100);
+var updateArray = [];
+var drawArray = [];
 
-    o.run = function() {
-        this.xPos += 0.5
-    }
+var lastRender = 0;
 
-}
+canvas.width = canvasWidth;
+canvas.height = canvasHeight;
 
-//---- Game Loop ----//
-{
-    function update(progress) {
-
-        updateArray.forEach(element => {
-            element.update(progress);
-        });
-
-    }
-
-    function draw(ctx) {
-        ctx.fillStyle = canvasFillColor;
-        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
-
-        drawArray.forEach(element => {
-            element.draw(ctx);
-        });
-    }
-    
-    function loop(timestamp) {
-        var progress = timestamp - lastRender;
-    
-        update(progress);
-        draw(ctx);
-    
-        lastRender = timestamp;
-        window.requestAnimationFrame(loop);
-    }
-}
+var lastFrameTimeMs = 0;
+const maxFPS = 60;
+var delta = 0;
+var timestep = 1000 / 60;
 
 
-//---- Start Loop ----//
-{
-    var lastRender = 0;
+function startLoop() {
     window.requestAnimationFrame(loop);
+}
+
+function loop(timestamp) {
+    // Throttle the frame rate.    
+    if (timestamp < lastFrameTimeMs + (1000 / maxFPS)) {
+        requestAnimationFrame(loop);
+        return;
+    }
+    delta += timestamp - lastFrameTimeMs;
+    lastFrameTimeMs = timestamp;
+
+    var numUpdateSteps = 0;
+    while (delta >= timestep) {
+        update(timestep);
+        delta -= timestep;
+        if (++numUpdateSteps >= 240) {
+            panic();
+            break;
+        }
+    }
+    draw(ctx);
+    window.requestAnimationFrame(loop);
+}
+
+function draw(ctx) {
+    ctx.fillStyle = canvasFillColor;
+    ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+
+    drawArray.forEach(element => {
+        element.draw(ctx);
+    });
+}
+
+function update(delta) {
+    updateArray.forEach(element => {
+        element.update(delta);
+    });
+
 }
