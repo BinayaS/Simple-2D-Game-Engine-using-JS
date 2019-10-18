@@ -25,6 +25,8 @@ class Object {
 
     runStart() {
     }
+    run(){
+    }
 
     update(delta) {
 
@@ -33,10 +35,6 @@ class Object {
             this.ranStart = true;
         }
 
-        if(this.ranStart === false) {
-            this.runStart();
-            this.ranStart = true;
-        }
         this.run(delta);
     }
 }
