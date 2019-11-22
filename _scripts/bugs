@@ -1,2 +1,1 @@
 - When in the air and falling, player can get stuck in the corner of a solid object if the player's corner comes in contact first
-- If the player's origin is not under a solid, it can't jump even if it is on a solid object

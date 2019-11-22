@@ -103,10 +103,10 @@
         this.horizontal = 0;
         this.vertical = 0;
 
-        this.spd = 3;
-        this.jumpPower = 13;
+        this.spd = 4;
+        this.jumpPower = 12;
         this.canJump = false;
-        this.grav = 0.8;
+        this.grav = 0.7;
     }
 
     //Run every frame
@@ -130,7 +130,9 @@
         }
 
         if(keyboardUp == 0 && this.vspd < 0) {
-            this.vspd += this.grav * 1.5;
+            if(this.vspd < -3) {
+                this.vspd = -3;
+            }
         }
 
         this.vspd += this.grav;
@@ -150,7 +152,8 @@
                     this.yPos += sign(this.vspd)/2;
                 }
                 this.vspd = 0;
-                if(pointInRect(this.xPos, this.yPos + this.height/2 + 1, solidArray[i])) {
+                if(pointInRect(this.xPos - (this.width-this.sprite.xOrigin), this.yPos + this.height/2 + 1, solidArray[i]) ||
+                    pointInRect(this.xPos + (this.width-this.sprite.xOrigin), this.yPos + this.height/2 + 1, solidArray[i])) {
                     this.canJump = true;
                 }
             }
@@ -158,6 +161,9 @@
 
         this.xPos += this.hspd;
         this.yPos += this.vspd;
+
+        //console.log(this.vspd);
+        
         
     }
 }
