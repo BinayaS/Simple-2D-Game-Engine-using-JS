@@ -53,7 +53,7 @@ function loop(timestamp) {
         update(timestep);
         delta -= timestep;
         if (++numUpdateSteps >= 240) {
-            panic();
+            panic(numUpdateSteps);
             break;
         }
     }
@@ -61,8 +61,9 @@ function loop(timestamp) {
     window.requestAnimationFrame(loop);
 }
 
-function panic() {
-    console.log("Panic!");   
+function panic(numUpdateSteps) {
+    console.log("Panic!");
+    numUpdateSteps -= 240;
 }
 
 function draw(ctx) {

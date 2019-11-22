@@ -103,10 +103,10 @@
         this.horizontal = 0;
         this.vertical = 0;
 
-        this.spd = 2;
-        this.jumpPower = 4;
+        this.spd = 4;
+        this.jumpPower = 10;
         this.canJump = false;
-        this.grav = 0.02;
+        this.grav = 0.4;
     }
 
     //Run every frame
@@ -122,6 +122,11 @@
             //stoped
         } else if(horizontal == 0){
             this.hspd = 0;
+        }
+
+        if(keyboardUp && this.canJump == true) {
+            this.canJump = false;
+            this.vspd -= this.jumpPower;
         }
 
         this.vspd += this.grav;
@@ -141,7 +146,9 @@
                     this.yPos += sign(this.vspd);
                 }
                 this.vspd = 0;
-                this.canJump = true;
+                if(pointInRect(this.xPos, this.yPos + this.height/2 + 1, solidArray[i])) {
+                    this.canJump = true;
+                }
             }
         }
 
