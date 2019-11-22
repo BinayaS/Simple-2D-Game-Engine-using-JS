@@ -103,10 +103,10 @@
         this.horizontal = 0;
         this.vertical = 0;
 
-        this.spd = 4;
-        this.jumpPower = 10;
+        this.spd = 3;
+        this.jumpPower = 13;
         this.canJump = false;
-        this.grav = 0.4;
+        this.grav = 0.8;
     }
 
     //Run every frame
@@ -129,13 +129,17 @@
             this.vspd -= this.jumpPower;
         }
 
+        if(keyboardUp == 0 && this.vspd < 0) {
+            this.vspd += this.grav * 1.5;
+        }
+
         this.vspd += this.grav;
 
         for(var i = 0; i < solidArray.length; i++) {
             //horizontal collision detection
             if(placeMeeting(this.hspd, 0, this, solidArray[i])) {
                 while(!placeMeeting(sign(this.hspd), 0, this, solidArray[i])) {
-                    this.xPos += sign(this.hspd);
+                    this.xPos += sign(this.hspd)/2;
                 }
                 this.hspd = 0;
             }
@@ -143,7 +147,7 @@
             //vertical collision detection
             if(placeMeeting(0,this.vspd, this, solidArray[i])) {
                 while(!placeMeeting(0, sign(this.vspd), this, solidArray[i])) {
-                    this.yPos += sign(this.vspd);
+                    this.yPos += sign(this.vspd)/2;
                 }
                 this.vspd = 0;
                 if(pointInRect(this.xPos, this.yPos + this.height/2 + 1, solidArray[i])) {
