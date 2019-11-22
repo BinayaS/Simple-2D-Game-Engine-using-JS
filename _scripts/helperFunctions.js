@@ -26,6 +26,21 @@ function pointInRect(x, y, _object2) {
      return false;
 }
 
+function placeMeeting(hspd, vspd, _object1, _object2) {
+    
+    findObjectsDementions(_object1, _object2);
+
+    if (object1x + hspd < object2x + object2width &&
+        object1x + hspd + (object1width) > object2x &&
+        object1y + vspd < object2y + object2height &&
+        object1y + vspd + (object1height) > object2y) {
+         // collision detected!
+         return true;
+     }
+     return false;
+
+}
+
 function findObjectsDementions(_object1, _object2) {
     if(_object1 != undefined) {
         if(_object1.sprite.img != undefined) {
@@ -54,5 +69,13 @@ function findObjectsDementions(_object1, _object2) {
             object2height = _object2.height;
         }
     }
-    
+}
+
+function sign(int) {
+    if(int > 0) {
+        return 1;
+    } else if(int < 0) {
+        return -1;
+    }
+    return 0;
 }

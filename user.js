@@ -39,7 +39,7 @@
 
 //---- Load objects ----//
 {
-    var objPlayer = new Object(s, 100, 100);
+    var objPlayer = new Object(s, 150, 100);
     var oSolid = new Object(sprSolid, 100, 200);
     var oSolid2 = new Object(sprSolid, 250, 250, 200, 50);
     var oSolid3 = new Object(sprSolid, 300, 100, 50, 50);
@@ -100,15 +100,18 @@
     objPlayer.runStart = function() {
         this.hspd = 0;
         this.vspd = 0;
-        this.spd = 2;
         this.horizontal = 0;
         this.vertical = 0;
+
+        this.spd = 2;
+        this.jumpPower = 4;
+        this.canJump = false;
+        this.grav = 0.02;
     }
 
     //Run every frame
     objPlayer.run = function() {
         var horizontal = keyboardRight - keyboardLeft;
-        var vertical = keyboardDown - keyboardUp;
 
         //moving right
         if(horizontal == 1) {
@@ -121,35 +124,30 @@
             this.hspd = 0;
         }
 
-        //moving up
-        if(vertical == 1) {
-            this.vspd = this.spd;
-            //moving down
-        } else if(vertical == -1) {
-            this.vspd = -this.spd;
-            //stoped
-        } else {
-            this.vspd = 0;
+        this.vspd += this.grav;
+
+        for(var i = 0; i < solidArray.length; i++) {
+            //horizontal collision detection
+            if(placeMeeting(this.hspd, 0, this, solidArray[i])) {
+                while(!placeMeeting(sign(this.hspd), 0, this, solidArray[i])) {
+                    this.xPos += sign(this.hspd);
+                }
+                this.hspd = 0;
+            }
+
+            //vertical collision detection
+            if(placeMeeting(0,this.vspd, this, solidArray[i])) {
+                while(!placeMeeting(0, sign(this.vspd), this, solidArray[i])) {
+                    this.yPos += sign(this.vspd);
+                }
+                this.vspd = 0;
+                this.canJump = true;
+            }
         }
 
         this.xPos += this.hspd;
         this.yPos += this.vspd;
-
-        var collision = false;
-
-        for(var i = 0; i < solidArray.length; i++) {
-            if(solidArray[i] != undefined) {
-                if(rectInRect(this, solidArray[i])) {
-                    collision = true;
-                }
-            }
-        }
-
-        if(collision == true) {
-            this.sprite.color = "rgba(0, 255, 0, 1)"; 
-        } else {
-            this.sprite.color = "rgba(255, 0, 0, 1)";
-        }
+        
     }
 }
 
