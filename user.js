@@ -1,8 +1,19 @@
-//---- Test Code ----//
+//---- Load Variables----//
+{
+    var keyboardLeft = 0;
+    var keyboardRight = 0;
+    var keyboardUp = 0;
+    var keyboardDown = 0;
+}
+
+//---- Load Images ----//
 {
     var image = new Image();
     image.src = "/_assets/Player.png";
-    
+}
+
+//---- Load Sprites ----//
+{
     var s = new Sprite({
         xOrigin: 10,
         yOrigin: 10,
@@ -10,47 +21,136 @@
         height: 20,
         color: "rgba(0, 255, 0, 1)"
     });
+
     var s2 = new Sprite({
         xOrigin: image.width/2,
         yOrigin: image.height/2,
         img: image
     });
+
     var sprSolid = new Sprite({
         xOrigin: 0,
-        yOrigin: 20,
-        width: canvas.width,
-        height: 20,
+        yOrigin: 0,
+        width: 100,
+        height: 100,
         color: "rgba(255, 0, 0, 0.25)"
     });
-    
-    var o = new Object(s, 400, 100);
-    var o2 = new Object(s2, 200, 100);
-    var oSolid = new Object(sprSolid, 0, canvas.height)
-
-    scrRunStart = function() {
-        this.vspd = 0;
-    }
-    scrRun = function() {
-        if(this.yPos < (canvasHeight - this.sprite.img.height/2)) {
-            this.vspd += 0.1;
-        } else {
-            this.vspd = 0;
-        }
-        this.yPos += this.vspd;
-    }
-    scrRunNoImg = function() {
-        if(this.yPos < (canvasHeight - this.sprite.height/2)) {
-            this.vspd += 0.1;
-        } else {
-            this.vspd = 0;
-        }
-        this.yPos += this.vspd;
-    }
-
-    o2.runStart = scrRunStart;
-    o2.run = scrRun;
-    o.runStart = scrRunStart;
-    o.run = scrRunNoImg;
 }
 
-startLoop();
+//---- Load objects ----//
+{
+    var objPlayer = new Object(s, 100, 100);
+    var oSolid = new Object(sprSolid, 100, 200);
+    var oSolid2 = new Object(sprSolid, 250, 250, 200, 50);
+    var oSolid3 = new Object(sprSolid, 300, 100, 50, 50);
+    var oSolid4 = new Object(s2, 400, 200);
+}
+
+//---- Setup Arrays ----//
+{
+    var solidArray = [];
+    solidArray.push(oSolid);
+    solidArray.push(oSolid2);
+    solidArray.push(oSolid3);
+    solidArray.push(oSolid4);
+}
+
+//---- Keyboard Inputs ----//
+{
+    document.addEventListener('keydown', function(event) {
+        if(event.keyCode == 37 || event.keyCode == 65) {
+            keyboardLeft = 1;
+        }
+
+        if(event.keyCode == 39 || event.keyCode == 68) {
+            keyboardRight = 1;
+        }
+
+        if(event.keyCode == 38 || event.keyCode == 87) {
+            keyboardUp = 1;
+        }
+
+        if(event.keyCode == 40 || event.keyCode == 83) {
+            keyboardDown = 1;
+        }
+    });
+
+    document.addEventListener('keyup', function(event) {
+        if(event.keyCode == 37 || event.keyCode == 65) {
+            keyboardLeft = 0;
+        }
+
+        if(event.keyCode == 39 || event.keyCode == 68) {
+            keyboardRight = 0;
+        }
+
+        if(event.keyCode == 38 || event.keyCode == 87) {
+            keyboardUp = 0;
+        }
+
+        if(event.keyCode == 40 || event.keyCode == 83) {
+            keyboardDown = 0;
+        }
+    });
+}
+
+//---- Player Scripts ----//
+{
+    //Run on creation
+    objPlayer.runStart = function() {
+        this.hspd = 0;
+        this.vspd = 0;
+        this.spd = 2;
+        this.horizontal = 0;
+        this.vertical = 0;
+    }
+
+    //Run every frame
+    objPlayer.run = function() {
+        var horizontal = keyboardRight - keyboardLeft;
+        var vertical = keyboardDown - keyboardUp;
+
+        //moving right
+        if(horizontal == 1) {
+            this.hspd = this.spd;
+            //moving left
+        } else if(horizontal == -1) {
+            this.hspd = -this.spd;
+            //stoped
+        } else if(horizontal == 0){
+            this.hspd = 0;
+        }
+
+        //moving up
+        if(vertical == 1) {
+            this.vspd = this.spd;
+            //moving down
+        } else if(vertical == -1) {
+            this.vspd = -this.spd;
+            //stoped
+        } else {
+            this.vspd = 0;
+        }
+
+        this.xPos += this.hspd;
+        this.yPos += this.vspd;
+
+        var collision = false;
+
+        for(var i = 0; i < solidArray.length; i++) {
+            if(solidArray[i] != undefined) {
+                if(rectInRect(this, solidArray[i])) {
+                    collision = true;
+                }
+            }
+        }
+
+        if(collision == true) {
+            this.sprite.color = "rgba(0, 255, 0, 1)"; 
+        } else {
+            this.sprite.color = "rgba(255, 0, 0, 1)";
+        }
+    }
+}
+
+window.onload = startLoop;

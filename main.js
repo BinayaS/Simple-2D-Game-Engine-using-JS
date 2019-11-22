@@ -19,13 +19,24 @@ canvas.width = canvasWidth;
 canvas.height = canvasHeight;
 
 var lastFrameTimeMs = 0;
-const maxFPS = 60;
+const maxFPS = 120;
 var delta = 0;
 var timestep = 1000 / 60;
 
 
 function startLoop() {
     window.requestAnimationFrame(loop);
+}
+
+function whenAvailable(name, callback) {
+    var interval = 10; // ms
+    window.setTimeout(function() {
+        if (window[name]) {
+            callback(window[name]);
+        } else {
+            window.setTimeout(arguments.callee, interval);
+        }
+    }, interval);
 }
 
 function loop(timestamp) {
@@ -48,6 +59,10 @@ function loop(timestamp) {
     }
     draw(ctx);
     window.requestAnimationFrame(loop);
+}
+
+function panic() {
+    console.log("Panic!");   
 }
 
 function draw(ctx) {
