@@ -9,7 +9,7 @@
 //---- Load Images ----//
 {
     var image = new Image();
-    image.src = "/_assets/Player.png";
+    image.src = "Simple2DGame/_assets/Player.png";
 }
 
 //---- Load Sprites ----//
